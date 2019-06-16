@@ -5,5 +5,6 @@ class Job {
     this.startTick = startTick;
     this.duration = duration;
     this.startSlot = startSlot;
+    this.remainingTicks = duration;
   }
 }

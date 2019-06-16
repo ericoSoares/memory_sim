@@ -19,11 +19,56 @@ class Memory {
 	getFirstFitSlot(size) {
 		let slots = this.getAllEmptySlots();
 		for (var slot of slots) {
-			console.log(slot);
 			if (slot.end - slot.start >= size)
 				return slot.start;
 		}
 		return -1;
+	}
+
+	getBestFitSlot(size) {
+		let slots = this.getAllEmptySlots();
+		let bestSlot = -1;
+		let bestSlotSize = Number.POSITIVE_INFINITY;
+		for(var slot of slots) {
+			let curSlotSize = slot.end - slot.start;
+			if(curSlotSize >= size && curSlotSize < bestSlotSize) {
+				bestSlotSize = curSlotSize;
+				bestSlot = slot.start;
+			}
+		}
+		return bestSlot;
+	}
+
+	getWorstFitSlot(size) {
+		let slots = this.getAllEmptySlots();
+		let worstSlot = -1;
+		let worstSlotSize = Number.NEGATIVE_INFINITY;
+		for(var slot of slots) {
+			let curSlotSize = slot.end - slot.start;
+			if(curSlotSize >= size && curSlotSize > worstSlotSize) {
+				worstSlotSize = curSlotSize;
+				worstSlot = slot.start;
+			}
+		}
+		return worstSlot;
+	}
+
+	defragmentMemory() {
+		let jobs = this.getAllJobsInMemory();
+		this.slots = this.slots.map(e => 'EMPTY');
+		for(let i = 0; i < jobs.length; i++) {
+			this.storeJob(jobs[i], this.getFirstFitSlot(jobs[i].size));
+		}
+	}
+
+	getAllJobsInMemory() {
+		let jobs = [];
+		for(let slot of this.slots) {
+			if(slot != 'EMPTY' && !jobs.includes(slot)) {
+				jobs.push(slot);
+			}
+		}
+		return jobs;
 	}
 
 	storeJob(job, start) {
@@ -43,12 +88,10 @@ class Memory {
 
 	getAllEmptySlots() {
 		let auxList = this.slots.map(e => (e == 'EMPTY' ? '0' : '1'));
-		console.log(auxList);
 		let slotList = [];
 		let regex = /0+/g;
 		let match = null;
 		while ((match = regex.exec(auxList.join(""))) != null) {
-			console.log(match);
 			slotList.push({start: match.index, end: match.index + match[0].length})
 		}
 		return slotList;
