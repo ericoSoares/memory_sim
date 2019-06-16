@@ -21,6 +21,13 @@ label {
   background-color: lightgrey;
   height: 100%;
   padding: 10px;
+  overflow-y: auto;
+}
+
+textarea {
+  resize:vertical;
+  min-height: 200px;
+  max-height: 250px;
 }
 
 .stage {
@@ -47,9 +54,8 @@ label {
 }
 
 .new-job {
+  margin-top: 30%;
   padding: 10px;
-  height: 30%;
-  border-radius: 5px;
 }
 
 .memory-container {

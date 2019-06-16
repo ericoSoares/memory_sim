@@ -36,9 +36,29 @@ function renderJobTable(jobs) {
   table.html(str);
 }
 
+function renderWaitTable(jobs) {
+  let table = $('.inac-job-table tbody');
+  table.html('');
+  let str = '';
+  for(let i = 0; i < jobs.length; i++) {
+    str += `
+      <tr>
+        <td>${jobs[i].id}</td>
+        <td>${jobs[i].size}</td>
+        <td>${jobs[i].positionInMemory}</td>
+        <td>${jobs[i].startTick}</td>
+        <td>${jobs[i].duration}</td>
+        <td>X</td>
+      </tr>
+    `
+  }
+  table.html(str);
+}
+
 function updateUI(mem) {
   renderJobTable(mem.getAllJobsInMemory());
   renderMemoryStack(mem.slots);
+  renderWaitTable(mem.waitingList);
 }
 
 function randomColor() {
