@@ -32,6 +32,21 @@ class Memory {
 		}
 	}
 
+	storeJob(job, start) {
+		this.slots.fill(job, start, start + job.size);
+	}
+
+	removeJob(job) {
+		this.slots = this.slots.map(e => {
+			if(e == 'EMPTY')
+				return 'EMPTY';
+			else if(e.id == job.id)
+				return 'EMPTY';
+			else
+				return e;
+		})
+	}
+
 	getAllEmptySlots() {
 		let slotList = [];
 		let auxList = [];
