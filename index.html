@@ -18,8 +18,9 @@
 <body>
   <div class="container main">
     <div class="row">
-      <div class="col-xs-4 panel">
+      <div class="col-xs-4 col-md-3 panel">
         <div class="settings">
+          <h4><strong>Controles</strong></h4>
           <label>
             Tamanho da memória:
             <input class="form-control" type="number" name="mem-size">
@@ -37,11 +38,27 @@
           </label>
           <button class="btn btn-success start-sim">Inicial simulação</button>
           <div class="simulation-controls">
+            <table class="control-table table table borderless">
+              <thead>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>T:</strong></td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td><strong>Total de processos:</strong></td>
+                  <td>3</td>
+                </tr>
+              </tbody>
+            </table>
             <button class="next-step btn btn-primary">Avançar</button>
           </div>
         </div>
         <div class="new-job">
-          <h4><strong>Novo processo:</strong></h4>
+          <h4><strong>Adicionar processo:</strong></h4>
           <label>
             ID:
             <input type="text" class="form-control" name="job-id">
@@ -50,10 +67,54 @@
             Tamanho:
             <input type="text" class="form-control" name="job-id">
           </label>
-          <button class="btn btn-primary">Adicionar processo</button>
+          <div class="text-right"><button class="btn btn-primary">Adicionar</button></div>
         </div>
       </div>
-      <div class="col-xs-8 stage"></div>
+      <div class="col-xs-8 col-md-9 stage">
+        <div class="row">
+          <div class="col-xs-4 memory-container">
+            <div class="stack">
+            </div>
+          </div>
+          <div class="col-xs-8 logs-container">
+            <div class="job-list">
+              <h4><strong>Processos em memória</strong></h4>
+              <table class="mem-job-table table table-hover table-sm table-bordered">
+                <thead>
+                  <th scope="col">ID</th>
+                  <th scope="col">Tamanho</th>
+                  <th scope="col">Posição</th>
+                  <th scope="col">Entrada</th>
+                  <th scope="col">Saída</th>
+                  <th scope="col"></th>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+            <div class="inactive-jobs">
+              <h4><strong>Processos em espera:</strong></h4>
+              <table class="inac-job-table table table-hover table-sm table-bordered">
+                <thead>
+                  <th scope="col">ID</th>
+                  <th scope="col">Tamanho</th>
+                  <th scope="col">Posição</th>
+                  <th scope="col">Entrada</th>
+                  <th scope="col">Saída</th>
+                  <th scope="col"></th>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+            <div class="logs">
+              <h4><strong>Logs</strong></h4>
+              <ul>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -62,7 +123,7 @@
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
   <script src="js/vendor/bootstrap.min.js"></script>
-
+  <script src="js/business.js"></script>
   <script src="js/main.js"></script>
   <script src="js/simulation.js"></script>
   <script src="js/memory.js"></script>

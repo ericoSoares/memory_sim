@@ -3,6 +3,7 @@ html, body {
   width: 100%;
   padding: 0;
   margin: 0;
+  overflow: hidden;
 }
 
 label {
@@ -25,19 +26,88 @@ label {
 .stage {
   height: 100%;
   padding: 10px;
-  
+}
+
+.control-table td {
+  text-align: left;
 }
 
 .settings {
   height: 60%;
 }
 
-.new-job {
+.start-sim {
+  width: 100%;
+}
+
+.simulation-controls {
   margin-top: 10px;
+  width: 100%;
+  text-align: right;
+}
+
+.new-job {
   padding: 10px;
   height: 30%;
-  border: 1px solid white;
   border-radius: 5px;
+}
+
+.memory-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.stack {
+  background-color: beige;
+  height: 98%;
+  width: 100%;
+  border: 1px solid black;
+  overflow-y: auto;
+}
+
+.stack-slot {
+  min-height: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
+
+.empty-slot {
+  background-color: white;
+  color: grey;
+}
+
+.occupied-slot {
+  background: salmon;
+  color: black;
+}
+
+.logs {
+  height: 50%;
+}
+
+.logs ul {
+  margin-top: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid black;
+}
+
+.logs ul li {
+  list-style-type: none;
+}
+
+.job-list {
+  height: 50%;
+  overflow-y: auto;
+}
+
+td, th {
+  text-align: center;
 }
 
 

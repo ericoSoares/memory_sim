@@ -2,6 +2,7 @@ class Memory {
 	constructor(size) {
 		this.slots = new Array(size).fill("EMPTY");
 		this.size = size;
+		this.waitingList = [];
 	}
 
 	addJobByAlgorithm(algorithm, job) {
@@ -9,9 +10,12 @@ class Memory {
 		switch (algorithm) {
 			case 'FIRST_FIT':
 				pos = this.getFirstFitSlot(job.size);
+				console.log(pos);
 				if (pos != -1) {
 					job.positionInMemory = pos;
 					this.storeJob(job, pos);
+				} else {
+					this.waitingList.push(job);
 				}
 				break;
 			case 'BEST_FIT':
@@ -19,6 +23,8 @@ class Memory {
 				if (pos != -1) {
 					job.positionInMemory = pos;
 					this.storeJob(job, pos);
+				} else {
+					this.waitingList.push(job);
 				}
 				break;
 			case 'WORST_FIT':
@@ -26,9 +32,13 @@ class Memory {
 				if (pos != -1) {
 					job.positionInMemory = pos;
 					this.storeJob(job, pos);
+				} else {
+					this.waitingList.push(job);
 				}
 				break;
 		}
+
+		renderMemoryStack(this.slots);
 	}
 
 	getFirstFitSlot(size) {
@@ -78,6 +88,8 @@ class Memory {
 				this.storeJob(jobs[i], this.getFirstFitSlot(jobs[i].size));
 			}
 		}
+
+		renderMemoryStack(this.slots);
 	}
 
 	getAllJobsInMemory() {
@@ -103,6 +115,8 @@ class Memory {
 			else
 				return e;
 		})
+
+		renderMemoryStack(this.slots);
 	}
 
 	getAllEmptySlots() {

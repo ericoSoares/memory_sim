@@ -6,5 +6,6 @@ class Job {
     this.duration = duration;
     this.positionInMemory = position;
     this.remainingTicks = duration;
+    this.color = randomColor();
   }
 }
