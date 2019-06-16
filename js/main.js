@@ -7,7 +7,16 @@ $(document).ready(() => {
   mem.storeJob(job2, 8);
   mem.storeJob(job3, 5);
   mem.defragmentMemory();
-  console.log(mem);
+  console.log(JSON.parse(JSON.stringify(mem)));
+  mem.removeJob(job3);
+
+  console.log(JSON.parse(JSON.stringify(mem)));
+  mem.addJobByAlgorithm('WORST_FIT', job3);
+  
+  console.log(JSON.parse(JSON.stringify(mem)));
+  mem.defragmentMemory();
+  
+  console.log(JSON.parse(JSON.stringify(mem)));
 })
 
 $('.start-sim').click(() => {

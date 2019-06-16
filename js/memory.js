@@ -4,14 +4,29 @@ class Memory {
 		this.size = size;
 	}
 
-	addJob(algorithm, jobs) {
+	addJobByAlgorithm(algorithm, job) {
+		let pos = -1;
 		switch (algorithm) {
 			case 'FIRST_FIT':
-
+				pos = this.getFirstFitSlot(job.size);
+				if (pos != -1) {
+					job.positionInMemory = pos;
+					this.storeJob(job, pos);
+				}
 				break;
 			case 'BEST_FIT':
+				pos = this.getBestFitSlot(job.size);
+				if (pos != -1) {
+					job.positionInMemory = pos;
+					this.storeJob(job, pos);
+				}
 				break;
 			case 'WORST_FIT':
+				pos = this.getWorstFitSlot(job.size);
+				if (pos != -1) {
+					job.positionInMemory = pos;
+					this.storeJob(job, pos);
+				}
 				break;
 		}
 	}
@@ -29,9 +44,9 @@ class Memory {
 		let slots = this.getAllEmptySlots();
 		let bestSlot = -1;
 		let bestSlotSize = Number.POSITIVE_INFINITY;
-		for(var slot of slots) {
+		for (var slot of slots) {
 			let curSlotSize = slot.end - slot.start;
-			if(curSlotSize >= size && curSlotSize < bestSlotSize) {
+			if (curSlotSize >= size && curSlotSize < bestSlotSize) {
 				bestSlotSize = curSlotSize;
 				bestSlot = slot.start;
 			}
@@ -43,9 +58,9 @@ class Memory {
 		let slots = this.getAllEmptySlots();
 		let worstSlot = -1;
 		let worstSlotSize = Number.NEGATIVE_INFINITY;
-		for(var slot of slots) {
+		for (var slot of slots) {
 			let curSlotSize = slot.end - slot.start;
-			if(curSlotSize >= size && curSlotSize > worstSlotSize) {
+			if (curSlotSize >= size && curSlotSize > worstSlotSize) {
 				worstSlotSize = curSlotSize;
 				worstSlot = slot.start;
 			}
@@ -56,15 +71,19 @@ class Memory {
 	defragmentMemory() {
 		let jobs = this.getAllJobsInMemory();
 		this.slots = this.slots.map(e => 'EMPTY');
-		for(let i = 0; i < jobs.length; i++) {
-			this.storeJob(jobs[i], this.getFirstFitSlot(jobs[i].size));
+		for (let i = 0; i < jobs.length; i++) {
+			let pos = this.getFirstFitSlot(jobs[i].size);
+			if (pos != -1) {
+				jobs[i].positionInMemory = pos;
+				this.storeJob(jobs[i], this.getFirstFitSlot(jobs[i].size));
+			}
 		}
 	}
 
 	getAllJobsInMemory() {
 		let jobs = [];
-		for(let slot of this.slots) {
-			if(slot != 'EMPTY' && !jobs.includes(slot)) {
+		for (let slot of this.slots) {
+			if (slot != 'EMPTY' && !jobs.includes(slot)) {
 				jobs.push(slot);
 			}
 		}
@@ -92,7 +111,7 @@ class Memory {
 		let regex = /0+/g;
 		let match = null;
 		while ((match = regex.exec(auxList.join(""))) != null) {
-			slotList.push({start: match.index, end: match.index + match[0].length})
+			slotList.push({ start: match.index, end: match.index + match[0].length })
 		}
 		return slotList;
 	}
