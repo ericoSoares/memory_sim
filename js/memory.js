@@ -17,19 +17,13 @@ class Memory {
 	}
 
 	getFirstFitSlot(size) {
-		var count = 0;
-		var startIndex = 0;
-		for (var i = 0; i < this.slots.length; i++) {
-			if (this.slots[i] == 'EMPTY') {
-				count++;
-				if (count >= size) {
-					return startIndex;
-				}
-			} else {
-				startIndex = i + 1;
-			}
-
+		let slots = this.getAllEmptySlots();
+		for (var slot of slots) {
+			console.log(slot);
+			if (slot.end - slot.start >= size)
+				return slot.start;
 		}
+		return -1;
 	}
 
 	storeJob(job, start) {
@@ -38,9 +32,9 @@ class Memory {
 
 	removeJob(job) {
 		this.slots = this.slots.map(e => {
-			if(e == 'EMPTY')
+			if (e == 'EMPTY')
 				return 'EMPTY';
-			else if(e.id == job.id)
+			else if (e.id == job.id)
 				return 'EMPTY';
 			else
 				return e;
@@ -48,29 +42,15 @@ class Memory {
 	}
 
 	getAllEmptySlots() {
+		let auxList = this.slots.map(e => (e == 'EMPTY' ? '0' : '1'));
+		console.log(auxList);
 		let slotList = [];
-		let auxList = [];
-		// Create a list of indexes from memory that are occupied
-		for (let i = 0; i < this.slots.length; i++) {
-			if(this.slots[i] != 'EMPTY') {
-				auxList.push(i);
-			}
+		let regex = /0+/g;
+		let match = null;
+		while ((match = regex.exec(auxList.join(""))) != null) {
+			console.log(match);
+			slotList.push({start: match.index, end: match.index + match[0].length})
 		}
-
-		// Edge case
-		if(auxList.length < 1) {
-			slotList.push({start: 0, end: this.slots.length});
-			return slotList;
-		}
-		// Create final list of unoccupied spaces in memory
-		let base = 0;
-		for(let i = 0; i < auxList.length; i++) {
-			if(auxList[i] - base > 0) {
-				slotList.push({start: base, end: auxList[i]})
-			}
-			base = auxList[i] + 1;
-		}
-
 		return slotList;
 	}
 }
