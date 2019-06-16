@@ -1,12 +1,44 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
 
+label {
+  width: 100%;
+}
 
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
+.main, .row {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
 
+.panel {
+  background-color: lightgrey;
+  height: 100%;
+  padding: 10px;
+}
 
+.stage {
+  height: 100%;
+  padding: 10px;
+  
+}
 
+.settings {
+  height: 60%;
+}
 
+.new-job {
+  margin-top: 10px;
+  padding: 10px;
+  height: 30%;
+  border: 1px solid white;
+  border-radius: 5px;
+}
 
 
 
