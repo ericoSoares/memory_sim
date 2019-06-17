@@ -39,12 +39,26 @@ textarea {
   text-align: left;
 }
 
-.settings {
-  height: 60%;
-}
-
 .start-sim {
   width: 100%;
+}
+
+.sim-btns-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stop-sim {
+  width: 49%;
+}
+
+.next-step {
+  width: 49%;
+}
+
+.defragment {
+  width: 100%;
+  margin-top: 5px;
 }
 
 .simulation-controls {
@@ -76,9 +90,24 @@ textarea {
   min-height: 20px;
   font-weight: bold;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   border-bottom: 1px solid black;
+}
+
+.slot-id {
+  background: white;
+  height: 100%;
+  width: 30px;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slot-val {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .empty-slot {

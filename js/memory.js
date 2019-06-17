@@ -106,6 +106,25 @@ class Memory {
 		this.slots.fill(job, start, start + job.size);
 	}
 
+	processInitialJobs(jobs, algorithm) {
+		jobs = jobs.split('\n').map(e => e.trim()).filter(e => e != '');
+
+		if(jobs.length % 4 != 0) {
+			alert('Input incial inválido');
+			return;
+		}
+
+		for(let i = 0; i < jobs.length; i += 4) {
+			let newJob = new Job(
+				jobs[i], 
+				parseInt(jobs[i + 1]),
+				parseInt(jobs[i + 2]),
+				parseInt(jobs[i + 3])
+			);
+			this.waitingList.push(newJob);
+		}
+	}
+
 	removeJob(job) {
 		this.slots = this.slots.map(e => {
 			if (e == 'EMPTY')

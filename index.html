@@ -10,7 +10,7 @@
 
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?version=51">
 
   <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 </head>
@@ -28,16 +28,16 @@
           <label>
             Algoritmo:
             <select class="form-control" name="algorithm">
-              <option>First Fit</option>
-              <option>Best Fit</option>
-              <option>Worst Fit</option>
+              <option value="FIRST_FIT">First Fit</option>
+              <option value="BEST_FIT">Best Fit</option>
+              <option value="WORST_FIT">Worst Fit</option>
             </select>
           </label>
           <label>Processos iniciais:
             <textarea class="form-control" rows="3"></textarea>
           </label>
-          <button class="btn btn-success start-sim">Inicial simulação</button>
-          <div class="simulation-controls">
+          <button class="btn btn-success start-sim">Iniciar simulação</button>
+          <div class="simulation-controls hidden">
             <table class="control-table table table borderless">
               <thead>
                 <th scope="col"></th>
@@ -45,7 +45,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>T:</strong></td>
+                  <td><strong>Tempo:</strong></td>
                   <td>10</td>
                 </tr>
                 <tr>
@@ -54,10 +54,14 @@
                 </tr>
               </tbody>
             </table>
-            <button class="next-step btn btn-primary">Avançar</button>
+            <div class="sim-btns-container">
+              <button class="stop-sim btn btn-danger">Encerrar</button>
+              <button class="next-step btn btn-primary">Avançar</button>
+            </div>
+            <button class="defragment btn btn-default">Compactar memória</button>
           </div>
         </div>
-        <div class="new-job">
+        <div class="new-job hidden">
           <hr>
           <h4><strong>Adicionar processo:</strong></h4>
           <label>
@@ -66,9 +70,13 @@
           </label>
           <label>
             Tamanho:
-            <input type="text" class="form-control" name="job-id">
+            <input type="number" class="form-control" name="job-size">
           </label>
-          <div class="text-right"><button class="btn btn-primary">Adicionar</button></div>
+          <label>
+            Duração:
+            <input type="number" class="form-control" name="job-duration">
+          </label>
+          <div class="text-right"><button class="add-job-btn btn btn-primary">Adicionar</button></div>
         </div>
       </div>
       <div class="col-xs-8 col-md-9 stage">
