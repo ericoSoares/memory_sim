@@ -5,6 +5,9 @@ class Memory {
 		this.waitingList = [];
 	}
 
+	// Adiciona um processo à memória de acordo com o algoritmo escolhido, 
+	// Caso não consiga adicionar o elemento, adiciona o mesmo na lista de espera e retorna -1
+	// Caso contrário, retorna a posição que o processo foi adicionado
 	addJobByAlgorithm(algorithm, job) {
 		let pos = -1;
 		switch (algorithm) {
@@ -41,6 +44,7 @@ class Memory {
 		return pos;
 	}
 
+	// Encontra a posição de memória ideal para o processo usando FIRST FIT
 	getFirstFitSlot(size) {
 		let slots = this.getAllEmptySlots();
 		for (var slot of slots) {
@@ -50,6 +54,7 @@ class Memory {
 		return -1;
 	}
 
+	// Encontra a posição de memória ideal para o processo usando BEST FIT
 	getBestFitSlot(size) {
 		let slots = this.getAllEmptySlots();
 		let bestSlot = -1;
@@ -64,6 +69,7 @@ class Memory {
 		return bestSlot;
 	}
 
+	// Encontra a posição de memória ideal para o processo usando WORST FIT
 	getWorstFitSlot(size) {
 		let slots = this.getAllEmptySlots();
 		let worstSlot = -1;
@@ -78,6 +84,7 @@ class Memory {
 		return worstSlot;
 	}
 
+	// Compactação da memória, move todos os processos para posições contiguas
 	defragmentMemory() {
 		let jobs = this.getAllJobsInMemory();
 		this.slots = this.slots.map(e => 'EMPTY');
@@ -92,6 +99,7 @@ class Memory {
 		renderMemoryStack(this.slots);
 	}
 
+	// Retorna lista de todos os processos atualmente na memoria
 	getAllJobsInMemory() {
 		let jobs = [];
 		for (let slot of this.slots) {
@@ -102,18 +110,23 @@ class Memory {
 		return jobs;
 	}
 
+	// Função que realmente salva o processo na lista de espaços da memoria
 	storeJob(job, start) {
 		this.slots.fill(job, start, start + job.size);
 	}
 
+	// Processamento do input inicial da simulação
 	processInitialJobs(jobs, algorithm) {
+		// Extrai os processos
 		jobs = jobs.split('\n').map(e => e.trim()).filter(e => e != '');
 
+		// Tratamento de dados
 		if(jobs.length % 4 != 0) {
 			alert('Input incial inválido');
 			return;
 		}
 
+		// Cria os processos e adiciona à lista de espera
 		for(let i = 0; i < jobs.length; i += 4) {
 			let newJob = new Job(
 				jobs[i], 
@@ -132,11 +145,11 @@ class Memory {
 		for(let job of jobsInMemory) {
 			if(job.endTick == tick) {
 				this.removeJob(job.id);
-				//simul.addLog(`T${simul.currentTick}: desalocando ${job.id} (${job.size}bytes)`);
 			}
 		}
 
 		//Processa fila de espera, tentando adicionar os processos
+		// Caso não consiga adicionar o processo, compacta memoria e tenta de novo
 		for(let job of this.waitingList) {
 			if(job.startTick == tick){
 				let added = this.addJobByAlgorithm(algorithm, job);
@@ -159,6 +172,7 @@ class Memory {
 		}
 	}
 
+	// Remove processo da memória
 	removeJob(id) {
 		let currentJob = this.getAllJobsInMemory().filter(e => e.id == id)[0];
 		this.slots = this.slots.map(e => {
@@ -174,12 +188,13 @@ class Memory {
 		renderMemoryStack(this.slots);
 	}
 
+	// Remove processo da lista de espera
 	removeFromWaitList(id) {
 		let currentJob = this.waitingList.filter(e => e.id == id)[0];
 		this.waitingList = this.waitingList.filter(e => e.id != id);
-		//simul.addLog(`T${simul.currentTick}: desalocando ${id} (${currentJob.size}bytes)`);
 	}
 	
+	// Returona lista com todos os buracos vazios na memória
 	getAllEmptySlots() {
 		let auxList = this.slots.map(e => (e == 'EMPTY' ? '0' : '1'));
 		let slotList = [];

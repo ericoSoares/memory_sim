@@ -1,16 +1,16 @@
 let simul = undefined;
 
-$(document).ready(() => {
-
-})
-
+// Inicia a simulação
 $('.start-sim').click(() => {
+  // Pega os dados da simulação informados pelo usuario
   let memSize = parseInt($('input[name=mem-size]').val().trim()) || 100;
   let algorithm = $('select[name=algorithm]').val() || 'FIRST_FIT';
   let initialJobs = $('textarea').val().trim() || '';
 
+  // Inicializa interface gráfica responsavel pela simulação
   startSimulUI();
 
+  // Instancia um novo objeto de simulação, processando os processos iniciais
   simul = new Simulation(memSize, algorithm);
   simul.memory.processInitialJobs(initialJobs, algorithm);
   simul.addLog(`**************************************`);
@@ -20,8 +20,10 @@ $('.start-sim').click(() => {
 
 });
 
+// Lógica para chamar a proxima unidade de tempo
 $('.next-step').click(() => {
   if(simul) {
+    // Se simulação está em andamento, loga qual unidade de tempo está sendo iniciada, chama a função e atualiza a interface
     simul.addLog(`**************************************`);
     simul.addLog(`Iniciando T${simul.currentTick + 1}`)
     simul.nextTick();
@@ -29,6 +31,7 @@ $('.next-step').click(() => {
   }
 });
 
+// Chamada da função de compactação de memória
 $('.defragment').click(() => {
   if(simul) {
     simul.memory.defragmentMemory();
@@ -37,6 +40,7 @@ $('.defragment').click(() => {
   }
 });
 
+// Encerra simulação e limpa a tela
 $('.stop-sim').click(() => {
   if(confirm('Encerrar simulação?')) {
     resetUI();
@@ -44,11 +48,14 @@ $('.stop-sim').click(() => {
   }
 });
 
+// Trata a adição manual de processos
 $('.add-job-btn').click(() => {
+  // Pega os dados do novo processo nos inputs da tela
   let id = $('input[name=job-id]').val().trim();
   let size = parseInt($('input[name=job-size]').val().trim());
   let endTick = parseInt($('input[name=job-duration]').val().trim()) + simul.currentTick;
 
+  // Tratamentos
   if(!id || !size || !endTick || endTick <= simul.currentTick) {
     alert('Dados inválidos');
     return;
@@ -60,6 +67,7 @@ $('.add-job-btn').click(() => {
     return;
   }
 
+  // Cria o novo processo e adiciona na memoria, fazendo compactação se necessario
   let job = new Job(id, size, simul.currentTick, endTick);
   let added = simul.memory.addJobByAlgorithm(simul.algorithm, job);
   if(added == -1) {

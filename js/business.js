@@ -1,3 +1,5 @@
+
+// Funções de renderização dos elementos da inferface grafica
 function renderMemoryStack(slots) {
   let mem = $('.stack');
   mem.html('');
@@ -110,16 +112,19 @@ function resetUI() {
   $('.new-job').addClass('hidden');
 }
 
+// Delete um processo da lista de espera e atualiza tela
 function deleteFromWaitList(id) {
   simul.memory.removeFromWaitList(id);
   updateUI(simul.memory, simul.currentTick);
 }
 
+// Delete um processo da memoria e atualiza a tela
 function deleteFromMemory(id) {
   simul.memory.removeJob(id);
   updateUI(simul.memory, simul.currentTick);
 }
 
+// Função helper, gera o hex code de uma cor random
 function randomColor() {
   return 'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ', 0.5)';
 }
