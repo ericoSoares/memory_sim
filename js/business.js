@@ -30,7 +30,7 @@ function renderJobTable(jobs) {
       <tr>
         <td>${jobs[i].id}</td>
         <td>${jobs[i].size}</td>
-        <td>${jobs[i].positionInMemory}</td>
+        <td>${jobs[i].positionInMemory != undefined ? jobs[i].positionInMemory : "NULL"}</td>
         <td>${jobs[i].startTick}</td>
         <td>${jobs[i].endTick}</td>
         <td class="delete-job btn btn-danger" onclick="deleteFromMemory('${jobs[i].id}')">X</td>
@@ -49,7 +49,7 @@ function renderWaitTable(jobs) {
       <tr>
         <td>${jobs[i].id}</td>
         <td>${jobs[i].size}</td>
-        <td>${jobs[i].positionInMemory}</td>
+        <td>${jobs[i].positionInMemory != undefined ? jobs[i].positionInMemory : "NULL"}</td>
         <td>${jobs[i].startTick}</td>
         <td>${jobs[i].endTick}</td>
         <td class="delete-job btn btn-danger" onclick="deleteFromWaitList('${jobs[i].id}')">X</td>
@@ -62,6 +62,19 @@ function renderWaitTable(jobs) {
 function renderControlTable(jobs, tick) {
   $('.current-tick').html(tick);
   $('.jobs-count').html(jobs.getAllJobsInMemory().length);
+}
+
+function renderLogs(logs) {
+  let logElem = $('.logs ul');
+  logElem.html('');
+  let str = '';
+  for(let log of logs) {
+    str += `
+      <li>${log}</li>
+    `
+  }
+
+  logElem.html(str);
 }
 
 function startSimulUI() {
@@ -80,6 +93,7 @@ function updateUI(mem, tick) {
   renderMemoryStack(mem.slots);
   renderWaitTable(mem.waitingList);
   renderControlTable(mem, tick);
+  renderLogs(simul.logs);
 }
 
 function resetUI() {

@@ -1,19 +1,6 @@
 let simul = undefined;
 
 $(document).ready(() => {
-  /* mem = new Memory(30);
-  let job = new Job('1', 3, 1, 2);
-  let job2 = new Job('2', 1, 1, 2);
-  let job3 = new Job('3', 2, 1, 2);
-  let job4 = new Job('4', 21, 1, 2);
-  mem.addJobByAlgorithm('BEST_FIT', job);
-  mem.addJobByAlgorithm('BEST_FIT', job2);
-  mem.addJobByAlgorithm('BEST_FIT', job3);
-  mem.addJobByAlgorithm('BEST_FIT', job4);
-  mem.removeJob(job3);
-  mem.addJobByAlgorithm('WORST_FIT', job3);
-
-  renderJobTable(mem.getAllJobsInMemory()); */
 
 })
 
@@ -26,12 +13,17 @@ $('.start-sim').click(() => {
 
   simul = new Simulation(memSize, algorithm);
   simul.memory.processInitialJobs(initialJobs, algorithm);
+  simul.addLog(`**************************************`);
+  simul.addLog(`${algorithm}`);
+  simul.addLog(`**************************************`);
   simul.updateScreen();
 
 });
 
 $('.next-step').click(() => {
   if(simul) {
+    simul.addLog(`**************************************`);
+    simul.addLog(`Iniciando T${simul.currentTick + 1}`)
     simul.nextTick();
     simul.updateScreen();
   }
@@ -40,6 +32,7 @@ $('.next-step').click(() => {
 $('.defragment').click(() => {
   if(simul) {
     simul.memory.defragmentMemory();
+    simul.addLog(`T${simul.currentTick}: compactando a memória`);
     simul.updateScreen();
   }
 });
@@ -61,7 +54,24 @@ $('.add-job-btn').click(() => {
     return;
   }
 
+  if(simul.memory.getAllJobsInMemory().filter(e => e.id == id).length
+    || simul.memory.waitingList.filter(e => e.id == id).length) {
+    alert("Já existe um processo com este ID");
+    return;
+  }
+
   let job = new Job(id, size, simul.currentTick, endTick);
-  simul.memory.addJobByAlgorithm(simul.algorithm, job);
+  let added = simul.memory.addJobByAlgorithm(simul.algorithm, job);
+  if(added == -1) {
+    simul.memory.defragmentMemory();
+    added = simul.memory.addJobByAlgorithm(simul.algorithm, job);
+    if(added == -1) {
+      simul.addLog(`T${simul.currentTick}: espaço livre não encontrado para o processo ${id}`);
+    } else {
+      simul.addLog(`T${simul.currentTick}: espaço livre encontrado e alocado na posição ${added} da memória`);
+    }
+  } else {
+    simul.addLog(`T${simul.currentTick}: espaço livre encontrado e alocado na posição ${added} da memória`);
+  }
   simul.updateScreen();
 });

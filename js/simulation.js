@@ -14,4 +14,8 @@ class Simulation {
     this.currentTick++;
     this.memory.processNextTick(this.algorithm, this.currentTick);
   }
+
+  addLog(msg) {
+    this.logs.push(msg);
+  }
 }

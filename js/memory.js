@@ -132,6 +132,7 @@ class Memory {
 		for(let job of jobsInMemory) {
 			if(job.endTick == tick) {
 				this.removeJob(job.id);
+				//simul.addLog(`T${simul.currentTick}: desalocando ${job.id} (${job.size}bytes)`);
 			}
 		}
 
@@ -139,14 +140,27 @@ class Memory {
 		for(let job of this.waitingList) {
 			if(job.startTick == tick){
 				let added = this.addJobByAlgorithm(algorithm, job);
-				if(added != -1) {
+				simul.addLog(`T${simul.currentTick}: procurando espaço livre para ${job.id} (${job.size} bytes)`);
+				if(added == -1) {
+					simul.addLog(`T${simul.currentTick}: espaço livre não encontrado para ${job.id} (${job.size} bytes), compactando memória`);
+					this.defragmentMemory();
+					added = this.addJobByAlgorithm(algorithm, job);
+					if(added != -1) {
+						this.waitingList = this.waitingList.filter(e => e.id != job.id);
+						simul.addLog(`T${simul.currentTick}: espaço livre encontrado e alocado na posição ${added} da memória`);
+					} else {
+						simul.addLog(`T${simul.currentTick}: não há espaço livre disponível`);
+					}
+				} else {
 					this.waitingList = this.waitingList.filter(e => e.id != job.id);
+					simul.addLog(`T${simul.currentTick}: espaço livre encontrado e alocado na posição ${added} da memória`);
 				}
 			}
 		}
 	}
 
 	removeJob(id) {
+		let currentJob = this.getAllJobsInMemory().filter(e => e.id == id)[0];
 		this.slots = this.slots.map(e => {
 			if (e == 'EMPTY')
 				return 'EMPTY';
@@ -156,11 +170,14 @@ class Memory {
 				return e;
 		})
 
+		simul.addLog(`T${simul.currentTick}: desalocando ${id} (${currentJob.size} bytes)`);
 		renderMemoryStack(this.slots);
 	}
 
 	removeFromWaitList(id) {
+		let currentJob = this.waitingList.filter(e => e.id == id)[0];
 		this.waitingList = this.waitingList.filter(e => e.id != id);
+		//simul.addLog(`T${simul.currentTick}: desalocando ${id} (${currentJob.size}bytes)`);
 	}
 	
 	getAllEmptySlots() {
