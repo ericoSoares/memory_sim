@@ -33,7 +33,7 @@ function renderJobTable(jobs) {
         <td>${jobs[i].positionInMemory}</td>
         <td>${jobs[i].startTick}</td>
         <td>${jobs[i].endTick}</td>
-        <td class="delete-job btn btn-danger" onclick="deleteFromMemory(${jobs[i].id})">X</td>
+        <td class="delete-job btn btn-danger" onclick="deleteFromMemory('${jobs[i].id}')">X</td>
       </tr>
     `
   }
@@ -52,7 +52,7 @@ function renderWaitTable(jobs) {
         <td>${jobs[i].positionInMemory}</td>
         <td>${jobs[i].startTick}</td>
         <td>${jobs[i].endTick}</td>
-        <td class="delete-job btn btn-danger" onclick="deleteFromWaitList(${jobs[i].id})">X</td>
+        <td class="delete-job btn btn-danger" onclick="deleteFromWaitList('${jobs[i].id}')">X</td>
       </tr>
     `
   }
@@ -96,7 +96,15 @@ function resetUI() {
   $('.new-job').addClass('hidden');
 }
 
+function deleteFromWaitList(id) {
+  simul.memory.removeFromWaitList(id);
+  updateUI(simul.memory, simul.currentTick);
+}
 
+function deleteFromMemory(id) {
+  simul.memory.removeJob(id);
+  updateUI(simul.memory, simul.currentTick);
+}
 
 function randomColor() {
   return 'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ', 0.5)';

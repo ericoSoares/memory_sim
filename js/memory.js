@@ -131,7 +131,7 @@ class Memory {
 		//Atualiza a duração dos processos em memória, removendo os que estão expirados
 		for(let job of jobsInMemory) {
 			if(job.endTick == tick) {
-				this.removeJob(job);
+				this.removeJob(job.id);
 			}
 		}
 
@@ -146,11 +146,11 @@ class Memory {
 		}
 	}
 
-	removeJob(job) {
+	removeJob(id) {
 		this.slots = this.slots.map(e => {
 			if (e == 'EMPTY')
 				return 'EMPTY';
-			else if (e.id == job.id)
+			else if (e.id == id)
 				return 'EMPTY';
 			else
 				return e;
@@ -159,6 +159,10 @@ class Memory {
 		renderMemoryStack(this.slots);
 	}
 
+	removeFromWaitList(id) {
+		this.waitingList = this.waitingList.filter(e => e.id != id);
+	}
+	
 	getAllEmptySlots() {
 		let auxList = this.slots.map(e => (e == 'EMPTY' ? '0' : '1'));
 		let slotList = [];
