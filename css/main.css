@@ -48,6 +48,10 @@ textarea {
   justify-content: space-between;
 }
 
+.delete-job {
+  width: 100%;
+}
+
 .stop-sim {
   width: 49%;
 }

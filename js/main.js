@@ -27,11 +27,21 @@ $('.start-sim').click(() => {
   simul = new Simulation(memSize, algorithm);
   simul.memory.processInitialJobs(initialJobs, algorithm);
   simul.updateScreen();
+
+});
+
+$('.next-step').click(() => {
+  if(simul) {
+    simul.nextTick();
+    simul.updateScreen();
+  }
 });
 
 $('.defragment').click(() => {
-  if(simul)
+  if(simul) {
     simul.memory.defragmentMemory();
+    simul.updateScreen();
+  }
 });
 
 $('.stop-sim').click(() => {
@@ -44,17 +54,14 @@ $('.stop-sim').click(() => {
 $('.add-job-btn').click(() => {
   let id = $('input[name=job-id]').val().trim();
   let size = parseInt($('input[name=job-size]').val().trim());
-  let duration = parseInt($('input[name=job-duration]').val().trim());
+  let endTick = parseInt($('input[name=job-duration]').val().trim()) + simul.currentTick;
 
-  console.log(id);
-  console.log(size);
-  console.log(duration);
-  if(!id || !size || !duration) {
+  if(!id || !size || !endTick || endTick <= simul.currentTick) {
     alert('Dados inválidos');
     return;
   }
 
-  let job = new Job(id, size, simul.currentTick, duration);
+  let job = new Job(id, size, simul.currentTick, endTick);
   simul.memory.addJobByAlgorithm(simul.algorithm, job);
-  updateUI(simul.memory);
+  simul.updateScreen();
 });

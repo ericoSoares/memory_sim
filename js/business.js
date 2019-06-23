@@ -32,8 +32,8 @@ function renderJobTable(jobs) {
         <td>${jobs[i].size}</td>
         <td>${jobs[i].positionInMemory}</td>
         <td>${jobs[i].startTick}</td>
-        <td>${jobs[i].duration}</td>
-        <td>X</td>
+        <td>${jobs[i].endTick}</td>
+        <td class="delete-job btn btn-danger" onclick="deleteFromMemory(${jobs[i].id})">X</td>
       </tr>
     `
   }
@@ -51,12 +51,17 @@ function renderWaitTable(jobs) {
         <td>${jobs[i].size}</td>
         <td>${jobs[i].positionInMemory}</td>
         <td>${jobs[i].startTick}</td>
-        <td>${jobs[i].duration}</td>
-        <td>X</td>
+        <td>${jobs[i].endTick}</td>
+        <td class="delete-job btn btn-danger" onclick="deleteFromWaitList(${jobs[i].id})">X</td>
       </tr>
     `
   }
   table.html(str);
+}
+
+function renderControlTable(jobs, tick) {
+  $('.current-tick').html(tick);
+  $('.jobs-count').html(jobs.getAllJobsInMemory().length);
 }
 
 function startSimulUI() {
@@ -64,15 +69,17 @@ function startSimulUI() {
   $('select[name=algorithm]').prop("disabled", true);
   $('textarea').prop("disabled", true);
   $('.start-sim').prop("disabled", true);
-
+  $('.current-tick').html('0');
+  $('.jobs-count').html('0');
   $('.simulation-controls').removeClass('hidden');
   $('.new-job').removeClass('hidden');
 }
 
-function updateUI(mem) {
+function updateUI(mem, tick) {
   renderJobTable(mem.getAllJobsInMemory());
   renderMemoryStack(mem.slots);
   renderWaitTable(mem.waitingList);
+  renderControlTable(mem, tick);
 }
 
 function resetUI() {

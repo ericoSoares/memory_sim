@@ -38,7 +38,7 @@
           </label>
           <button class="btn btn-success start-sim">Iniciar simulação</button>
           <div class="simulation-controls hidden">
-            <table class="control-table table table borderless">
+            <table class="control-table table table-borderless">
               <thead>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -46,11 +46,11 @@
               <tbody>
                 <tr>
                   <td><strong>Tempo:</strong></td>
-                  <td>10</td>
+                  <td><span class="current-tick"></span></td>
                 </tr>
                 <tr>
                   <td><strong>Total de processos:</strong></td>
-                  <td>3</td>
+                  <td><span class="jobs-count"></span></td>
                 </tr>
               </tbody>
             </table>
@@ -73,7 +73,7 @@
             <input type="number" class="form-control" name="job-size">
           </label>
           <label>
-            Duração:
+            Saída:
             <input type="number" class="form-control" name="job-duration">
           </label>
           <div class="text-right"><button class="add-job-btn btn btn-primary">Adicionar</button></div>

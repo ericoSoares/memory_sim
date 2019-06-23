@@ -1,11 +1,10 @@
 class Job {
-  constructor(id, size, startTick, duration, position) {
+  constructor(id, size, startTick, endTick, position) {
     this.id = id;
     this.size = size;
     this.startTick = startTick;
-    this.duration = duration;
+    this.endTick = endTick;
     this.positionInMemory = position;
-    this.remainingTicks = duration;
     this.color = randomColor();
   }
 }

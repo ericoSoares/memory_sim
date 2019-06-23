@@ -10,7 +10,6 @@ class Memory {
 		switch (algorithm) {
 			case 'FIRST_FIT':
 				pos = this.getFirstFitSlot(job.size);
-				console.log(pos);
 				if (pos != -1) {
 					job.positionInMemory = pos;
 					this.storeJob(job, pos);
@@ -39,6 +38,7 @@ class Memory {
 		}
 
 		renderMemoryStack(this.slots);
+		return pos;
 	}
 
 	getFirstFitSlot(size) {
@@ -122,6 +122,27 @@ class Memory {
 				parseInt(jobs[i + 3])
 			);
 			this.waitingList.push(newJob);
+		}
+	}
+
+	//Processamento de uma nova unidade de tempo da simulação
+	processNextTick(algorithm, tick) {
+		let jobsInMemory = this.getAllJobsInMemory();
+		//Atualiza a duração dos processos em memória, removendo os que estão expirados
+		for(let job of jobsInMemory) {
+			if(job.endTick == tick) {
+				this.removeJob(job);
+			}
+		}
+
+		//Processa fila de espera, tentando adicionar os processos
+		for(let job of this.waitingList) {
+			if(job.startTick == tick){
+				let added = this.addJobByAlgorithm(algorithm, job);
+				if(added != -1) {
+					this.waitingList = this.waitingList.filter(e => e.id != job.id);
+				}
+			}
 		}
 	}
 
