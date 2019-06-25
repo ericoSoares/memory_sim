@@ -128,12 +128,11 @@ class Memory {
 
 		// Cria os processos e adiciona à lista de espera
 		for(let i = 0; i < jobs.length; i += 4) {
-			let newJob = new Job(
-				jobs[i], 
-				parseInt(jobs[i + 1]),
-				parseInt(jobs[i + 2]),
-				parseInt(jobs[i + 3])
-			);
+			let jobName = jobs[i];
+			let jobSize = parseInt(jobs[i + 1]);
+			let jobStart = parseInt(jobs[i + 2]);
+			let jobDuration = jobStart + parseInt(jobs[i + 3]);
+			let newJob = new Job(jobName, jobSize, jobStart, jobDuration);
 			this.waitingList.push(newJob);
 		}
 		return true;
