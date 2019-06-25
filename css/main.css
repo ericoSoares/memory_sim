@@ -33,6 +33,8 @@ textarea {
 .stage {
   height: 100%;
   padding: 10px;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .control-table td {
@@ -143,10 +145,16 @@ textarea {
 .job-list {
   height: 50%;
   overflow-y: auto;
+  max-height: 250px;
 }
 
 td, th {
   text-align: center;
+}
+
+.inactive-jobs {
+  max-height: 250px;
+  overflow-y: auto;
 }
 
 

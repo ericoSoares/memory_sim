@@ -123,7 +123,7 @@ class Memory {
 		// Tratamento de dados
 		if(jobs.length % 4 != 0) {
 			alert('Input incial inválido');
-			return;
+			return false;
 		}
 
 		// Cria os processos e adiciona à lista de espera
@@ -136,6 +136,7 @@ class Memory {
 			);
 			this.waitingList.push(newJob);
 		}
+		return true;
 	}
 
 	//Processamento de uma nova unidade de tempo da simulação

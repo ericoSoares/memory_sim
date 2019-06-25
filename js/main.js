@@ -7,12 +7,18 @@ $('.start-sim').click(() => {
   let algorithm = $('select[name=algorithm]').val() || 'FIRST_FIT';
   let initialJobs = $('textarea').val().trim() || '';
 
+  //Validação dos inputs, se estiver ok, inicia simulação
+  simul = new Simulation(memSize, algorithm);
+  let inputsAreValid = simul.memory.processInitialJobs(initialJobs, algorithm);
+  if(!inputsAreValid) {
+    simul = undefined;
+    return;
+  }
+
   // Inicializa interface gráfica responsavel pela simulação
   startSimulUI();
 
   // Instancia um novo objeto de simulação, processando os processos iniciais
-  simul = new Simulation(memSize, algorithm);
-  simul.memory.processInitialJobs(initialJobs, algorithm);
   simul.addLog(`**************************************`);
   simul.addLog(`${algorithm}`);
   simul.addLog(`**************************************`);
