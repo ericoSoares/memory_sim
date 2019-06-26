@@ -16,27 +16,21 @@ class Memory {
 				if (pos != -1) {
 					job.positionInMemory = pos;
 					this.storeJob(job, pos);
-				} else {
-					this.waitingList.push(job);
-				}
+				} 
 				break;
 			case 'BEST_FIT':
 				pos = this.getBestFitSlot(job.size);
 				if (pos != -1) {
 					job.positionInMemory = pos;
 					this.storeJob(job, pos);
-				} else {
-					this.waitingList.push(job);
-				}
+				} 
 				break;
 			case 'WORST_FIT':
 				pos = this.getWorstFitSlot(job.size);
 				if (pos != -1) {
 					job.positionInMemory = pos;
 					this.storeJob(job, pos);
-				} else {
-					this.waitingList.push(job);
-				}
+				} 
 				break;
 		}
 
@@ -133,7 +127,7 @@ class Memory {
 			let jobStart = parseInt(jobs[i + 2]);
 			let jobDuration = jobStart + parseInt(jobs[i + 3]);
 			let newJob = new Job(jobName, jobSize, jobStart, jobDuration);
-			this.waitingList.push(newJob);
+			this.addToWaitingList(newJob);
 		}
 		return true;
 	}
@@ -150,7 +144,8 @@ class Memory {
 
 		//Processa fila de espera, tentando adicionar os processos
 		// Caso não consiga adicionar o processo, compacta memoria e tenta de novo
-		for(let job of this.waitingList) {
+		for(let i = 0; i < this.waitingList.length; i++) {
+			let job = this.waitingList[i];
 			if(job.startTick == tick){
 				let added = this.addJobByAlgorithm(algorithm, job);
 				simul.addLog(`T${simul.currentTick}: procurando espaço livre para ${job.id} (${job.size} bytes)`);
@@ -162,7 +157,9 @@ class Memory {
 						this.waitingList = this.waitingList.filter(e => e.id != job.id);
 						simul.addLog(`T${simul.currentTick}: espaço livre encontrado e alocado na posição ${added} da memória`);
 					} else {
-						simul.addLog(`T${simul.currentTick}: não há espaço livre disponível`);
+						simul.addLog(`T${simul.currentTick}: não há espaço livre disponível, processo excluído`);
+						simul.lostJobs++;
+						this.waitingList = this.waitingList.filter(e => e.id != job.id);
 					}
 				} else {
 					this.waitingList = this.waitingList.filter(e => e.id != job.id);
@@ -192,6 +189,13 @@ class Memory {
 	removeFromWaitList(id) {
 		let currentJob = this.waitingList.filter(e => e.id == id)[0];
 		this.waitingList = this.waitingList.filter(e => e.id != id);
+	}
+
+	addToWaitingList(job) {
+		let exists = this.waitingList.filter(e => e.id == job.id).length > 0;
+		if(!exists) {
+			this.waitingList.push(job);
+		}
 	}
 	
 	// Returona lista com todos os buracos vazios na memória

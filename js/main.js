@@ -81,6 +81,7 @@ $('.add-job-btn').click(() => {
     added = simul.memory.addJobByAlgorithm(simul.algorithm, job);
     if(added == -1) {
       simul.addLog(`T${simul.currentTick}: espaço livre não encontrado para o processo ${id}`);
+      simul.lostJobs++;
     } else {
       simul.addLog(`T${simul.currentTick}: espaço livre encontrado e alocado na posição ${added} da memória`);
     }

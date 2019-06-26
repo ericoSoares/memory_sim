@@ -64,6 +64,7 @@ function renderWaitTable(jobs) {
 function renderControlTable(jobs, tick) {
   $('.current-tick').html(tick);
   $('.jobs-count').html(jobs.getAllJobsInMemory().length);
+  $('.lost-jobs').html(simul.lostJobs);
 }
 
 function renderLogs(logs) {

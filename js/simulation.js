@@ -2,6 +2,7 @@ class Simulation {
   constructor(memSize, algorithm) {
     this.currentTick = 0;
     this.algorithm = algorithm;
+    this.lostJobs = 0;
     this.memory = new Memory(memSize);
     this.logs = [];
   }
